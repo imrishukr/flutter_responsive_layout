@@ -28,7 +28,10 @@ class LoginInfo extends ChangeNotifier {
   }
 
   /// Logs out the current user.
-  void logout() {
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+
     _userName = '';
     notifyListeners();
   }

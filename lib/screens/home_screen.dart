@@ -1,3 +1,5 @@
+import 'package:dashboard_example/configs/login_info.dart';
+import 'package:dashboard_example/configs/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,26 +10,31 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canvas = MediaQuery.of(context).size;
-    print('Widgth: ${canvas.width}');
-    print('Height: ${canvas.height}');
-    return LayoutBuilder(
-      builder: (context, constrants) {
-        print('Widgth 2: ${constrants.maxWidth}');
-        print('Height 2: ${constrants.maxHeight}');
-        return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () => context.goNamed(
-              RouteConstants.detailsScreen,
-              params: {'id': '123'},
+    final _loginInfo = locator<LoginInfo>();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Screen'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () async => await _loginInfo.logout(),
+            icon: Icon(
+              Icons.logout,
             ),
           ),
-          body: Center(
-            child: SelectableText('Home Screen'),
-          ),
-        );
-      },
+          SizedBox(width: 10.0),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => context.goNamed(
+          RouteConstants.detailsScreen,
+          params: {'id': '123'},
+        ),
+      ),
+      body: Center(
+        child: SelectableText('Home Screen'),
+      ),
     );
   }
 }
