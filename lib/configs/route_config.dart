@@ -1,3 +1,6 @@
+import 'package:dashboard_example/configs/login_info.dart';
+import 'package:dashboard_example/configs/service_locator.dart';
+import 'package:dashboard_example/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,6 +23,11 @@ class RouteConfig {
         name: RouteConstants.splashScreen,
         path: '/',
         builder: (context, state) => SplashScreen(),
+      ),
+      GoRoute(
+        path: '/login',
+        name: RouteConstants.login,
+        builder: (context, state) => LoginScreen(),
       ),
       GoRoute(
         name: RouteConstants.homeScreen,
@@ -90,6 +98,38 @@ class RouteConfig {
         ),
       ),
     ],
+    // redirect to the login page if the user is not logged in
+    redirect: (BuildContext context, GoRouterState state) async {
+      debugPrint('Navigating to ${state.path}');
+      debugPrint('Navigating to 2 ${state.name}');
+
+      debugPrint('Navigating to 2 ${state.subloc}');
+      final loginInfo = locator<LoginInfo>();
+
+      // if the user is not logged in, they need to login
+      final bool loggedIn = await loginInfo.loggedIn();
+      final bool loggingIn = state.subloc == '/login';
+
+      if (!loggingIn && state.subloc == '/') {
+        return '/';
+      }
+
+      if (!loggedIn) {
+        return '/login';
+      }
+
+      // if the user is logged in but still on the login page, send them to
+      // the home page
+      if (loggingIn) {
+        return '/home';
+      }
+
+      // no need to redirect at all
+      return null;
+    },
+
+    // changes on the listenable will cause the router to refresh it's route
+    refreshListenable: locator<LoginInfo>(),
     errorPageBuilder: (context, state) => MaterialPage<void>(
       key: state.pageKey,
       child: Scaffold(

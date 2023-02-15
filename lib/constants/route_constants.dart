@@ -1,5 +1,6 @@
 class RouteConstants {
   static const String splashScreen = '/';
+  static const String login = '/login';
   static const String homeScreen = '/home';
   static const emailTemplateScreen = '/email-template';
   static const slotConfigurationScreen = '/slot-configuration';
