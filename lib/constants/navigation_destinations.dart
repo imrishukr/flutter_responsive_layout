@@ -19,4 +19,9 @@ List<NavItem> destinations = [
     label: 'Slot Configuration',
     icon: Icon(Icons.lock_clock_rounded),
   ),
+  NavItem(
+    route: RouteConstants.partiesScreen,
+    label: 'Parties',
+    icon: Icon(Icons.group),
+  ),
 ];

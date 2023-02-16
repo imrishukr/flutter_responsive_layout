@@ -1,8 +1,8 @@
-import 'package:dashboard_example/configs/login_info.dart';
-import 'package:dashboard_example/configs/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/configs/login_info.dart';
+import '/configs/service_locator.dart';
 import '/constants/route_constants.dart';
 
 class HomeScreen extends StatelessWidget {

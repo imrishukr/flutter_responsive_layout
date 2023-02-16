@@ -1,16 +1,20 @@
-import 'package:dashboard_example/configs/login_info.dart';
-import 'package:dashboard_example/configs/service_locator.dart';
-import 'package:dashboard_example/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_responsive_layout/models/party.dart';
+import 'package:flutter_responsive_layout/screens/create_party.dart';
+import 'package:flutter_responsive_layout/screens/parties_screen.dart';
+import 'package:flutter_responsive_layout/screens/party_details.dart';
 import 'package:go_router/go_router.dart';
 
+import '/configs/login_info.dart';
+import '/configs/service_locator.dart';
 import '/constants/route_constants.dart';
 import '/screens/details_screen.dart';
+import '/screens/email_template.dart';
 import '/screens/home_screen.dart';
+import '/screens/login_screen.dart';
 import '/screens/root_layout.dart';
+import '/screens/slot_configuration.dart';
 import '/screens/splash_screen.dart';
-import '../screens/email_template.dart';
-import '../screens/slot_configuration.dart';
 
 const _pageKey = ValueKey('_pageKey');
 const _scaffoldKey = ValueKey('_scaffoldKey');
@@ -96,6 +100,74 @@ class RouteConfig {
             child: const SlotConfiguration(),
           ),
         ),
+      ),
+      GoRoute(
+        name: RouteConstants.partiesScreen,
+        path: '/parties',
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: _pageKey,
+          child: RootLayout(
+            key: _scaffoldKey,
+            currentIndex: 3,
+            child: const PartiesScreen(),
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: 'party-details',
+            name: RouteConstants.partyDetails,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                child: RootLayout(
+                  key: _scaffoldKey,
+                  currentIndex: 3,
+                  child: PartyDetails(
+                    party: state.extra as Party?,
+                  ),
+                ),
+                transitionDuration: const Duration(milliseconds: 150),
+                transitionsBuilder: (BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                    Widget child) {
+                  // Change the opacity of the screen using a Curve based on the the animation's
+                  // value
+                  return FadeTransition(
+                    opacity:
+                        CurveTween(curve: Curves.easeInOut).animate(animation),
+                    child: child,
+                  );
+                },
+              );
+            },
+          ),
+          GoRoute(
+            path: 'create-party',
+            name: RouteConstants.createPartyScreen,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                child: RootLayout(
+                  key: _scaffoldKey,
+                  currentIndex: 3,
+                  child: CreateParty(),
+                ),
+                transitionDuration: const Duration(milliseconds: 150),
+                transitionsBuilder: (BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                    Widget child) {
+                  // Change the opacity of the screen using a Curve based on the the animation's
+                  // value
+                  return FadeTransition(
+                    opacity:
+                        CurveTween(curve: Curves.easeInOut).animate(animation),
+                    child: child,
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
     ],
     // redirect to the login page if the user is not logged in

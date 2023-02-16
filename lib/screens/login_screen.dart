@@ -1,6 +1,7 @@
-import 'package:dashboard_example/configs/login_info.dart';
-import 'package:dashboard_example/configs/service_locator.dart';
 import 'package:flutter/material.dart';
+
+import '/configs/login_info.dart';
+import '/configs/service_locator.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
